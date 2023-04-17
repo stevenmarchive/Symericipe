@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<title>Symericipe - Mes recettes</title>
+
+{% block stylesheet %}{% include "./navigation.html.twig" %}{% endblock %}
+
+{% block body %}
+
+<div class="container">
+
+  {% if not recipes.items is same as([]) %}
+    <h1 class="mt-4">Mes recettes</h1>
+
+        <a href="{{ path('recette.new') }}" class="btn btn-secondary mt-4">Créer une recette</a>
+
+    {% for message in app.flashes('success') %} <!-- Affiche le flash de addFlash de IngredientController -->
+      <div class="alert alert-secondary mt-4">{{ message }}</div>
+    {% endfor %}
+
+    <div class="count mt-4">
+     <p>Vous avez {{ recipes.getTotalItemCount }} recettes</p>
+    </div>
+
+    <table class="table table-hover mt-4">
+  <thead>
+    <tr>
+      <th scope="col">Numéro</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Prix</th>
+      <th scopre="col">Difficulté</th>
+      <th scope="col">Date de création</th>
+      <th scope="col">Modification</th>
+      <th scope="col">Suppression</th>
+      <th scope="col">Publication</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for recipe in recipes %}
+        <tr class="table-secondary">
+            <th scope="row">{{ recipe.id }}</th>
+            <td>{{ recipe.name }}</td>
+            <td>{% if recipe.price is null %}Non rénseigné{% else %}{{ recipe.price }}{% endif %}</td>
+              <td>{% if recipe.difficulty is null %}Non rénseigné{% else %}{{ recipe.difficulty }}{% endif %}</td>
+            <td>{{ recipe.createdAt|date('d/m/Y') }}</td> <!--Attention convertir createdAt qui est un DateTimeImmutable en string grâce à date('...') -->
+            <td><a href="{{ path('recette.edit', { id: recipe.id}) }}" class="btn btn-light">Modifier</a></td>
+            <td><a href="{{ path('recette.delete', { id: recipe.id}) }}" class="btn btn-light">Supprimer</a></td>
+            <td>
+              {% if recipe.isPublic is same as true %}
+                <a href="{{ path('app_depublication', { id: recipe.id }) }}" class="btn btn-light">Dépublier</a>
+              {% else %}
+                <a href="{{ path('app_publication', { id: recipe.id }) }}" class="btn btn-light">Publier</a>
+              {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div class="pagination-secondary d-flex justify-content-center mt-4">
+  {{ knp_pagination_render(recipes) }}
+</div>
+{% else %}
+<p>Il n'y a pas de recette.</p>
+<p>Veuillez créer votre première recette.</p>
+<a class="btn btn-secondary btn-lg ml-9" href="{{ path('recette.new') }}" role="button">Créer une recette</a>
+{% endif %}
+</div>
+    
+{% endblock %}
+

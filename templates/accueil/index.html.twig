@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<title>Symericipe - Accueil</title>
+
+{% block header %}{% include "./navigation.html.twig" %}{% endblock %}
+
+{% block body %}
+
+{% if app.user %}
+
+<div class="container mt-4">
+<div class="jumbotron">
+  <h1 class="display-4">Bienvenue sur Symericipe {{app.user.fullName}}</h1>
+  <p class="lead">Application de création de recette avec la possibilité de les partager, réaliser avec le framework Symfony.</p>
+  <hr class="my-4">
+</div>
+
+<h1 class="mt-4 mb-4">Recette de la communauté</h1>
+<div class="d-flex justify-content-between">
+{% for recipe in recipes %}
+    <div class="card text-white bg-secondary mb-3" style="max-width: 20rem;">
+        <div class="card-header">Recette numéro {{ recipe.id }}</div>
+        <div class="card-body">
+            <h4 class="card-title">{{ recipe.name }}</h4>
+            <p class="card-text">{{ recipe.description | slice(0,100) ~ '...'}}</p>
+        </div>
+    </div>
+{% endfor %}
+</div>
+    
+</div>    
+
+{% else %}
+
+<div class="container mt-4">
+<div class="jumbotron">
+  <h1 class="display-4">Bienvenue sur Symericipe</h1>
+  <p class="lead">Application de création de recette avec la possibilité de les partager, réaliser avec le framework Symfony.</p>
+  <hr class="my-4">
+  <a class="btn btn-secondary btn-lg ml-9" href="{{ path('app_inscription') }}" role="button">Inscription</a>
+  <a class="btn btn-secondary btn-lg ml-9" href="{{ path('app_connexion') }}" role="button">Connexion</a>
+</div>
+
+<h1 class="mt-4 mb-4">Recette de la communauté</h1>
+<div class="d-flex justify-content-between">
+{% for recipe in recipes %}
+    <div class="card text-white bg-secondary mb-3" style="max-width: 20rem;">
+        <div class="card-header">Recette numéro {{ recipe.id }}</div>
+        <div class="card-body">
+            <h4 class="card-title">{{ recipe.name }}</h4>
+            <p class="card-text">{{ recipe.description | slice(0,100) ~ '...'}}</p>
+        </div>
+    </div>
+{% endfor %}
+</div>
+    
+</div>
+
+{% endif %}
+
+{% endblock %}

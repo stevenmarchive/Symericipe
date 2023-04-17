@@ -1,0 +1,34 @@
+
+<title>Symericipe - Recettes</title>
+
+{% block stylesheet %}{% include "./navigation.html.twig" %}{% endblock %}
+{% block nav %}{% endblock %}
+
+{% block body %}
+
+<div class="container">
+
+{% for message in app.flashes('success') %}
+    <div class="alert alert-secondary mt-4">{{ message }}</div>
+{% endfor %}
+
+{% if not recipes.items is same as([]) %}
+
+<h1 class="mt-4 mb-4">Recette de la communauté</h1>
+<div class="d-flex justify-content-center flex-wrap">
+{% for recipe in recipes %}
+    <div class="card text-white bg-secondary mb-3" style="max-width: 20rem;">
+        <div class="card-header d-flex justify-content-center"><a class="btn btn-primary" href="{{ path('app_note', { id: recipe.id}) }}" role="button">Déscription</a></div> 
+
+        <div class="card-body">
+            <h4 class="card-title">{{ recipe.name }}</h4>
+            <p class="card-text">{{ recipe.description | slice(0,100) ~ '...'}}</p>
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+{% endif %}
+    
+{% endblock %}
+
